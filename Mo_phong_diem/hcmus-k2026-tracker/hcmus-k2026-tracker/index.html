@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quản Lý Tiến Độ Học Tập Cá Nhân K2026 — HCMUS Nhóm 07</title>
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body>
+  <!-- ===================================================================== -->
+  <!-- KHU VỰC 1: STICKY HEADER                                              -->
+  <!-- ===================================================================== -->
+  <header class="app-header">
+    <div class="header-inner container">
+      <div class="brand-group">
+        <div class="brand-logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+            <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1 class="brand-title">HCMUS Tracker <span class="badge-k">K2026</span></h1>
+          <p class="brand-subtitle">Quản lý Tiến độ Học tập • Chuẩn 138 TC • Offline-first</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <!-- Bộ chọn chuyên ngành -->
+        <div class="major-select-wrap">
+          <select id="majorSelect" class="input-select compact" aria-label="Chọn chuyên ngành">
+            <option value="TTNT">Ngành Trí tuệ nhân tạo (TTNT)</option>
+            <option value="CNTT">Ngành Công nghệ thông tin (CNTT)</option>
+            <option value="MMT-VT">Mạng máy tính & Viễn thông (MMT-VT)</option>
+          </select>
+        </div>
+
+        <!-- Trạng thái tự động lưu -->
+        <div id="saveStatus" class="save-pill" title="Dữ liệu được lưu tức thì trên trình duyệt, dùng được khi không có mạng">
+          <span class="dot-live"></span>
+          <span id="saveStatusText">Đã lưu Offline</span>
+        </div>
+
+        <!-- Nút chuyển Dark/Light Mode -->
+        <button id="themeToggleBtn" class="btn-icon" type="button" title="Chuyển chế độ Sáng / Tối" aria-label="Chuyển chế độ Sáng Tối">
+          <svg id="iconSun" class="hidden" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+          </svg>
+          <svg id="iconMoon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+          </svg>
+        </button>
+
+        <!-- Cụm công cụ JSON trên Desktop/Laptop -->
+        <div class="desktop-data-actions">
+          <button id="exportBtn" class="btn btn-outline btn-sm" type="button">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Xuất JSON
+          </button>
+          <label class="btn btn-outline btn-sm" for="importFileInput">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            Nhập JSON
+          </label>
+          <input id="importFileInput" type="file" accept=".json" class="sr-only" />
+          <button id="resetBtn" class="btn btn-danger-ghost btn-sm" type="button" title="Khôi phục mặc định Cẩm nang K2026">
+            Reset
+          </button>
+        </div>
+
+        <!-- Menu gọn trên Mobile -->
+        <div class="mobile-overflow">
+          <button id="mobileMenuBtn" class="btn-icon" type="button" aria-label="Menu dữ liệu">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+          </button>
+          <div id="mobileMenuDropdown" class="dropdown-menu hidden">
+            <button type="button" class="dropdown-item" data-action="export">Xuất dữ liệu (.json)</button>
+            <label class="dropdown-item" for="importFileInput">Nhập dữ liệu (.json)</label>
+            <div class="dropdown-divider"></div>
+            <button type="button" class="dropdown-item text-danger" data-action="reset">Khôi phục mặc định</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================================================================== -->
+  <!-- MAIN WORKSPACE                                                        -->
+  <!-- ===================================================================== -->
+  <main class="container main-content">
+    <!-- KHU VỰC 2: SEGMENTED NAVIGATION TABS -->
+    <div class="nav-bar-row">
+      <nav class="segmented-tabs" role="tablist" aria-label="Điều hướng chức năng">
+        <button class="seg-tab active" role="tab" aria-selected="true" data-tab="dashboard">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+          <span>Tiến độ &amp; Học phần</span>
+        </button>
+        <button class="seg-tab" role="tab" aria-selected="false" data-tab="whatif">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+          <span>Mô phỏng Điểm (CN-07)</span>
+        </button>
+        <button class="seg-tab" role="tab" aria-selected="false" data-tab="schedule">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span>Kế hoạch Học kỳ (CN-06)</span>
+        </button>
+      </nav>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- TAB 1: DASHBOARD BENTO GRID & MA TRẬN HỌC PHẦN                      -->
+    <!-- =================================================================== -->
+    <section id="tab-dashboard" class="tab-panel active">
+      <!-- KHU VỰC 3: SUMMARY BENTO GRID -->
+      <div class="bento-grid">
+        <!-- Bento Card 1: Tiến độ 138 TC -->
+        <article class="card kpi-card">
+          <div class="kpi-top">
+            <div>
+              <span class="kpi-label">Tín chỉ tích lũy chuyên môn</span>
+              <div class="kpi-value-row">
+                <strong id="kpiEarnedCredits" class="kpi-big">0</strong>
+                <span class="kpi-unit">/ 138 TC</span>
+              </div>
+            </div>
+            <span id="kpiProgressBadge" class="pill pill-blue">0.0%</span>
+          </div>
+          <div class="progress-track lg">
+            <div id="kpiProgressBar" class="progress-fill gradient-main" style="width: 0%"></div>
+          </div>
+          <p class="kpi-footnote">
+            Còn thiếu <strong id="kpiRemainingCredits">138</strong> TC bắt buộc &amp; tự chọn để đủ điều kiện tốt nghiệp.
+          </p>
+        </article>
+
+        <!-- Bento Card 2: ĐTB Tích lũy GPA -->
+        <article class="card kpi-card">
+          <div class="kpi-top">
+            <div>
+              <span class="kpi-label">ĐTB Tích lũy (GPA thang 4.0)</span>
+              <div class="kpi-value-row">
+                <strong id="kpiGpa4" class="kpi-big">0.00</strong>
+                <span class="kpi-unit">/ 4.00</span>
+              </div>
+            </div>
+            <span id="kpiRankBadge" class="pill pill-neutral">Chưa xếp loại</span>
+          </div>
+          <div class="gpa-meta-row">
+            <span>Hệ 10: <strong id="kpiGpa10">0.00</strong></span>
+            <span id="kpiFailWarning" class="fail-alert hidden"></span>
+          </div>
+          <p class="kpi-footnote">Tự động loại trừ các môn điều kiện phụ (GDTC, GDQP-AN, Ngoại ngữ).</p>
+        </article>
+
+        <!-- Bento Card 3: 3 Môn điều kiện phụ -->
+        <article class="card kpi-card">
+          <div class="kpi-top">
+            <span class="kpi-label">Điều kiện phụ (Ngoài 138 TC)</span>
+            <span id="kpiPrereqSummary" class="pill pill-neutral">0/3 Đạt</span>
+          </div>
+          <div id="prereqList" class="prereq-list"></div>
+        </article>
+
+        <!-- Bento Card 4 (Full width): 4 Khối kiến thức -->
+        <article class="card bento-full">
+          <div class="card-header-row">
+            <div>
+              <h2 class="section-title">Tiến độ 4 Khối kiến thức (Cẩm nang K2026)</h2>
+              <p class="section-desc">Bấm vào từng khối để lọc nhanh danh sách học phần bên dưới.</p>
+            </div>
+            <div id="electiveWarningChip" class="pill pill-amber hidden"></div>
+          </div>
+          <div id="blocksGrid" class="blocks-grid"></div>
+        </article>
+      </div>
+
+      <!-- Thanh chú giải thang điểm K2025/K2026 -->
+      <div class="card scale-legend">
+        <span class="scale-legend-title">Thang điểm K2026:</span>
+        <div class="scale-items">
+          <span class="grade-chip grade-A">A (4.0) • 8.5–10</span>
+          <span class="grade-chip grade-B">B (3.0) • 7.0–8.4</span>
+          <span class="grade-chip grade-C">C (2.0) • 5.5–6.9</span>
+          <span class="grade-chip grade-D">D (1.0) • 4.0–5.4</span>
+          <span class="grade-chip grade-F">F (0.0) • &lt; 4.0 (Học lại)</span>
+        </div>
+      </div>
+
+      <!-- KHU VỰC 4: BẢNG QUẢN LÝ HỌC PHẦN & BỘ LỌC -->
+      <div class="card workspace-card">
+        <div class="filter-toolbar">
+          <div class="search-row">
+            <div class="search-box">
+              <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input id="courseSearch" type="search" placeholder="Tìm Mã HP hoặc Tên học phần..." autocomplete="off" />
+            </div>
+            <button id="openMobileFilterBtn" class="btn btn-outline mobile-only" type="button">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+              Bộ lọc <span id="mobileFilterCount" class="filter-dot hidden"></span>
+            </button>
+          </div>
+
+          <div class="desktop-filters">
+            <select id="filterSemester" class="input-select">
+              <option value="ALL">Học kỳ: Tất cả (HK1–HK8)</option>
+              <option value="1">Học kỳ 1</option>
+              <option value="2">Học kỳ 2</option>
+              <option value="3">Học kỳ 3</option>
+              <option value="4">Học kỳ 4</option>
+              <option value="5">Học kỳ 5</option>
+              <option value="6">Học kỳ 6</option>
+              <option value="7">Học kỳ 7</option>
+              <option value="8">Học kỳ 8</option>
+            </select>
+
+            <select id="filterBlock" class="input-select">
+              <option value="ALL">Khối kiến thức: Tất cả</option>
+              <option value="Đại cương">Giáo dục đại cương (56 TC)</option>
+              <option value="Cơ sở ngành">Cơ sở ngành (38 TC)</option>
+              <option value="Chuyên ngành">Chuyên ngành (34 TC)</option>
+              <option value="Tốt nghiệp">Khối tốt nghiệp (10 TC)</option>
+              <option value="Điều kiện">Ngoài 138 TC (Điều kiện)</option>
+            </select>
+
+            <div id="statusPills" class="status-pills" role="group" aria-label="Lọc trạng thái môn học"></div>
+
+            <button id="clearFiltersBtn" class="btn btn-ghost btn-sm" type="button">Xóa lọc</button>
+          </div>
+        </div>
+
+        <!-- Bảng Ma trận Học phần trên Laptop/Desktop -->
+        <div class="table-wrap desktop-table-wrap">
+          <table class="course-table">
+            <thead>
+              <tr>
+                <th style="width: 105px">Mã HP</th>
+                <th>Tên Học phần</th>
+                <th class="col-hk text-center" style="width: 60px">HK</th>
+                <th class="text-center" style="width: 56px">TC</th>
+                <th style="width: 105px">Phân loại</th>
+                <th style="width: 150px">Trạng thái</th>
+                <th class="text-center" style="width: 108px">Điểm hệ 10</th>
+                <th class="text-center" style="width: 145px">Chữ / Hệ 4</th>
+              </tr>
+            </thead>
+            <tbody id="courseTableBody"></tbody>
+          </table>
+        </div>
+
+        <!-- Thẻ dọc trên Điện thoại (< 768px) -->
+        <div id="courseMobileList" class="mobile-course-list"></div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- TAB 2: MÔ PHỎNG ĐIỂM & MỤC TIÊU XẾP LOẠI - WHAT-IF (CN-07)          -->
+    <!-- =================================================================== -->
+    <section id="tab-whatif" class="tab-panel">
+      <!-- Banner chế độ Sandbox -->
+      <div class="sandbox-banner">
+        <div class="sandbox-info">
+          <span class="sandbox-badge">SANDBOX</span>
+          <p><strong>Chế độ thử nghiệm độc lập:</strong> Kéo thanh trượt hoặc chọn mục tiêu để dự báo GPA ra trường. Mọi thay đổi ở đây <strong>không ghi đè</strong> điểm thực tế của bạn.</p>
+        </div>
+        <div class="sandbox-actions">
+          <button id="whatIfPresetA" class="btn btn-outline btn-sm" type="button">Giả định toàn A (8.5)</button>
+          <button id="whatIfPresetB" class="btn btn-outline btn-sm" type="button">Giả định toàn B (7.5)</button>
+          <button id="whatIfResetBtn" class="btn btn-ghost btn-sm" type="button">Đặt lại</button>
+        </div>
+      </div>
+
+      <!-- 2 cột song song trên Laptop, xếp dọc trên Mobile -->
+      <div class="whatif-top-grid">
+        <!-- Cột trái: Bộ chọn mục tiêu xếp loại -->
+        <article class="card whatif-card">
+          <h2 class="section-title">1. Chọn Mục tiêu Xếp loại Tốt nghiệp</h2>
+          <p class="section-desc">Hệ thống giải phương trình mục tiêu cho toàn bộ số tín chỉ chuyên môn còn lại.</p>
+
+          <div class="target-cards" role="radiogroup" aria-label="Mục tiêu xếp loại">
+            <label class="target-option">
+              <input type="radio" name="whatIfTarget" value="3.60" data-s10="9.0" data-label="Xuất sắc" checked />
+              <div class="target-option-box">
+                <span class="target-rank text-emerald">Xuất sắc</span>
+                <strong class="target-num">GPA ≥ 3.60</strong>
+                <span class="target-sub">Chuẩn hệ 10: ≥ 9.0</span>
+              </div>
+            </label>
+            <label class="target-option">
+              <input type="radio" name="whatIfTarget" value="3.20" data-s10="8.0" data-label="Giỏi" />
+              <div class="target-option-box">
+                <span class="target-rank text-blue">Giỏi</span>
+                <strong class="target-num">GPA ≥ 3.20</strong>
+                <span class="target-sub">Chuẩn hệ 10: ≥ 8.0</span>
+              </div>
+            </label>
+            <label class="target-option">
+              <input type="radio" name="whatIfTarget" value="2.50" data-s10="7.0" data-label="Khá" />
+              <div class="target-option-box">
+                <span class="target-rank text-amber">Khá</span>
+                <strong class="target-num">GPA ≥ 2.50</strong>
+                <span class="target-sub">Chuẩn hệ 10: ≥ 7.0</span>
+              </div>
+            </label>
+          </div>
+
+          <div class="formula-box">
+            <div>
+              <span class="formula-label">Công thức tính điểm tối thiểu cần đạt:</span>
+              <code class="formula-code">x = [ T × (N + R) − S ] / R</code>
+            </div>
+            <div id="whatIfParamsText" class="formula-params">N = 0 TC • R = 138 TC</div>
+          </div>
+        </article>
+
+        <!-- Cột phải: Kết quả động & Thước đo tính khả thi -->
+        <article class="card whatif-card">
+          <div class="card-header-row">
+            <div>
+              <h2 class="section-title">2. Phân tích Khả thi &amp; Dự báo GPA</h2>
+              <p class="section-desc">Cập nhật theo thời gian thực khi đổi mục tiêu hoặc kéo điểm môn.</p>
+            </div>
+            <span id="feasibilityPill" class="pill pill-emerald">Khả thi</span>
+          </div>
+
+          <div class="whatif-metrics">
+            <div class="mini-metric">
+              <span class="mini-label">GPA hiện tại</span>
+              <strong id="wiCurrentGpa" class="mini-val">0.00</strong>
+            </div>
+            <div class="mini-metric highlight">
+              <span class="mini-label">Cần đạt ở TC còn lại</span>
+              <strong id="wiRequiredScore" class="mini-val">0.00</strong>
+              <span id="wiRequiredScore10" class="mini-sub">Hệ 10: 0.0</span>
+            </div>
+            <div class="mini-metric">
+              <span class="mini-label">GPA dự báo (Sandbox)</span>
+              <strong id="wiForecastGpa" class="mini-val text-navy">0.00</strong>
+              <span id="wiForecastRank" class="mini-sub">—</span>
+            </div>
+          </div>
+
+          <div class="gauge-wrap">
+            <div class="gauge-header">
+              <span>Thước đo tính khả thi (Feasibility Gauge)</span>
+              <strong id="feasibilityHint">Thực tế (&lt; 8.0/10)</strong>
+            </div>
+            <div class="progress-track lg">
+              <div id="feasibilityBar" class="progress-fill" style="width: 40%"></div>
+            </div>
+            <div class="gauge-ticks">
+              <span>Điểm sàn 5.0</span>
+              <span>Khả thi (&lt; 8.0)</span>
+              <span>Thử thách (8–9)</span>
+              <span>Quá ngưỡng (&gt; 10)</span>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Bảng kéo slider giả định các môn tương lai -->
+      <article class="card workspace-card">
+        <div class="card-header-row pad-card">
+          <div>
+            <h2 class="section-title">3. Giả định điểm các học phần chưa tích lũy</h2>
+            <p class="section-desc">Tự động liệt kê các môn chuyên môn chưa hoàn thành hoặc điểm F cần cải thiện (đã loại trừ môn điều kiện).</p>
+          </div>
+          <span id="wiCourseCountBadge" class="pill pill-neutral">0 học phần</span>
+        </div>
+        <div id="whatIfGrid" class="whatif-courses-grid"></div>
+      </article>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- TAB 3: XÂY DỰNG KẾ HOẠCH HỌC KỲ & THỜI KHÓA BIỂU (CN-06)            -->
+    <!-- =================================================================== -->
+    <section id="tab-schedule" class="tab-panel">
+      <!-- Thanh điều khiển học kỳ & cơ sở -->
+      <div class="card schedule-toolbar">
+        <div class="schedule-controls">
+          <div class="control-group">
+            <label for="planScopeSelect">Phạm vi học phần gợi ý</label>
+            <select id="planScopeSelect" class="input-select">
+              <option value="ACTIVE">Các môn đang xếp lịch (Đang học)</option>
+              <option value="ALL_UNFINISHED">Tất cả môn chưa hoàn thành + Học lại</option>
+              <option value="1">Học kỳ kiến nghị 1</option>
+              <option value="2">Học kỳ kiến nghị 2</option>
+              <option value="3">Học kỳ kiến nghị 3</option>
+              <option value="4">Học kỳ kiến nghị 4</option>
+              <option value="5">Học kỳ kiến nghị 5</option>
+              <option value="6">Học kỳ kiến nghị 6</option>
+              <option value="7">Học kỳ kiến nghị 7</option>
+              <option value="8">Học kỳ kiến nghị 8</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label for="planCampusFilter">Cơ sở đào tạo</label>
+            <select id="planCampusFilter" class="input-select">
+              <option value="ALL">Tất cả cơ sở</option>
+              <option value="Nguyễn Văn Cừ">CS Nguyễn Văn Cừ (Quận 5)</option>
+              <option value="Linh Trung">CS Linh Trung (Thủ Đức)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="schedule-summary-pills">
+          <div class="stat-chip">
+            <span>Số môn trong kỳ</span>
+            <strong id="planTotalCourses">0</strong>
+          </div>
+          <div class="stat-chip">
+            <span>Tổng tín chỉ dự kiến</span>
+            <strong id="planTotalCredits">0 TC</strong>
+          </div>
+          <span id="planLoadBadge" class="pill pill-blue">Tải học tập chuẩn</span>
+        </div>
+      </div>
+
+      <!-- Banner cảnh báo xung đột lịch học / chuyển cơ sở -->
+      <div id="scheduleConflictBanner" class="conflict-banner hidden" role="alert">
+        <div class="conflict-icon">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <div class="conflict-body">
+          <strong>Cảnh báo xung đột thời khóa biểu!</strong>
+          <ul id="scheduleConflictList"></ul>
+        </div>
+      </div>
+
+      <!-- Bố cục 2 phần: Danh sách môn lập kế hoạch + Lưới Thời khóa biểu -->
+      <div class="schedule-layout">
+        <!-- Cột trái: Chọn môn & tinh chỉnh thứ / ca / cơ sở -->
+        <aside class="card planner-sidebar">
+          <div class="sidebar-head">
+            <div>
+              <h2 class="section-title">Danh sách môn lập kế hoạch</h2>
+              <p class="section-desc">Tích chọn để đưa vào TKB; đổi Thứ, Ca, Cơ sở trực tiếp để gỡ trùng lịch.</p>
+            </div>
+          </div>
+          <div id="plannerCourseList" class="planner-list"></div>
+        </aside>
+
+        <!-- Cột phải: Lưới thời khóa biểu trực quan -->
+        <div class="card timetable-panel">
+          <div class="card-header-row">
+            <div>
+              <h2 class="section-title">Lưới Thời khóa biểu &amp; Khung giờ thực tế</h2>
+              <p class="section-desc">Tự động quy đổi tiết học Cổng thông tin sang giờ thực tế tại CS Nguyễn Văn Cừ &amp; Linh Trung.</p>
+            </div>
+            <div class="campus-legend">
+              <span class="campus-dot nvc">Nguyễn Văn Cừ</span>
+              <span class="campus-dot lt">Linh Trung</span>
+            </div>
+          </div>
+
+          <!-- Bảng TKB trên Laptop / Desktop -->
+          <div class="desktop-timetable-wrap">
+            <table class="timetable-grid">
+              <thead>
+                <tr>
+                  <th class="col-shift">Ca / Tiết</th>
+                  <th>Thứ 2</th>
+                  <th>Thứ 3</th>
+                  <th>Thứ 4</th>
+                  <th>Thứ 5</th>
+                  <th>Thứ 6</th>
+                  <th>Thứ 7</th>
+                </tr>
+              </thead>
+              <tbody id="timetableBody"></tbody>
+            </table>
+          </div>
+
+          <!-- TKB dạng thẻ theo từng ngày trên Điện thoại (< 768px) -->
+          <div class="mobile-timetable-wrap">
+            <div id="mobileDayTabs" class="day-pills" role="tablist"></div>
+            <div id="mobileTimetableList" class="mobile-day-list"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================================================================== -->
+  <!-- MOBILE FILTER BOTTOM SHEET (< 768px)                                  -->
+  <!-- ===================================================================== -->
+  <div id="filterBottomSheet" class="bottom-sheet hidden" aria-hidden="true">
+    <div id="bottomSheetBackdrop" class="sheet-backdrop"></div>
+    <div class="sheet-panel" role="dialog" aria-modal="true" aria-label="Bộ lọc học phần">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <h3>Bộ lọc Học phần</h3>
+        <button id="closeBottomSheetBtn" class="btn-icon" type="button" aria-label="Đóng">&times;</button>
+      </div>
+      <div class="sheet-body">
+        <div class="form-field">
+          <label for="mobFilterSemester">Học kỳ kiến nghị</label>
+          <select id="mobFilterSemester" class="input-select full">
+            <option value="ALL">Tất cả Học kỳ (HK1–HK8)</option>
+            <option value="1">Học kỳ 1</option><option value="2">Học kỳ 2</option>
+            <option value="3">Học kỳ 3</option><option value="4">Học kỳ 4</option>
+            <option value="5">Học kỳ 5</option><option value="6">Học kỳ 6</option>
+            <option value="7">Học kỳ 7</option><option value="8">Học kỳ 8</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label for="mobFilterBlock">Khối kiến thức</label>
+          <select id="mobFilterBlock" class="input-select full">
+            <option value="ALL">Tất cả Khối kiến thức</option>
+            <option value="Đại cương">Giáo dục đại cương (56 TC)</option>
+            <option value="Cơ sở ngành">Cơ sở ngành (38 TC)</option>
+            <option value="Chuyên ngành">Chuyên ngành (34 TC)</option>
+            <option value="Tốt nghiệp">Khối tốt nghiệp (10 TC)</option>
+            <option value="Điều kiện">Ngoài 138 TC (Điều kiện)</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label for="mobFilterStatus">Trạng thái học phần</label>
+          <select id="mobFilterStatus" class="input-select full">
+            <option value="ALL">Tất cả trạng thái</option>
+            <option value="DONE">Đã xong</option>
+            <option value="STUDYING">Đang học</option>
+            <option value="PENDING">Chưa học</option>
+          </select>
+        </div>
+      </div>
+      <div class="sheet-footer">
+        <button id="mobResetFilterBtn" class="btn btn-outline full" type="button">Xóa lọc</button>
+        <button id="mobApplyFilterBtn" class="btn btn-primary full" type="button">Áp dụng bộ lọc</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast thông báo gọn -->
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  <!-- Scripts chạy tuần tự (không cần ES Module server, mở trực tiếp file:// offline) -->
+  <script src="js/data.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/whatif.js"></script>
+  <script src="js/schedule.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

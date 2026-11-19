@@ -1,0 +1,101 @@
+/* ==========================================================================
+   DESIGN TOKENS — HCMUS ACADEMIC TRACKER K2026 (WCAG 2.1 AA CONTRAST)
+   ========================================================================== */
+:root {
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", Consolas, monospace;
+
+  /* Academic Navy & Slate Light Theme */
+  --bg-page: #F8FAFC;
+  --bg-surface: #FFFFFF;
+  --bg-subtle: #F1F5F9;
+  --bg-hover: #EEF2F7;
+  --border-color: #E2E8F0;
+  --border-strong: #CBD5E1;
+
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-muted: #64748B;
+
+  --navy: #1E3A8A;
+  --navy-hover: #172E6E;
+  --navy-soft: #EFF6FF;
+  --navy-border: #BFDBFE;
+
+  --sky: #0284C7;
+  --emerald: #059669;
+  --emerald-bg: #ECFDF5;
+  --emerald-text: #065F46;
+  --emerald-border: #A7F3D0;
+
+  --amber: #D97706;
+  --amber-bg: #FFFBEB;
+  --amber-text: #92400E;
+  --amber-border: #FDE68A;
+
+  --orange-bg: #FFF7ED;
+  --orange-text: #9A3412;
+
+  --rose: #DC2626;
+  --rose-bg: #FEF2F2;
+  --rose-text: #991B1B;
+  --rose-border: #FECACA;
+
+  --purple-bg: #F5F3FF;
+  --purple-text: #5B21B6;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+
+  --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.05);
+  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.05);
+  --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 16px 40px rgba(15, 23, 42, 0.16);
+}
+
+[data-theme="dark"] {
+  --bg-page: #0F172A;
+  --bg-surface: #1E293B;
+  --bg-subtle: #0B1324;
+  --bg-hover: #263449;
+  --border-color: #334155;
+  --border-strong: #475569;
+
+  --text-primary: #F8FAFC;
+  --text-secondary: #CBD5E1;
+  --text-muted: #94A3B8;
+
+  --navy: #3B82F6;
+  --navy-hover: #60A5FA;
+  --navy-soft: rgba(59, 130, 246, 0.15);
+  --navy-border: rgba(59, 130, 246, 0.35);
+
+  --sky: #38BDF8;
+  --emerald: #10B981;
+  --emerald-bg: rgba(16, 185, 129, 0.14);
+  --emerald-text: #6EE7B7;
+  --emerald-border: rgba(16, 185, 129, 0.35);
+
+  --amber: #F59E0B;
+  --amber-bg: rgba(245, 158, 11, 0.14);
+  --amber-text: #FCD34D;
+  --amber-border: rgba(245, 158, 11, 0.35);
+
+  --orange-bg: rgba(249, 115, 22, 0.15);
+  --orange-text: #FDBA74;
+
+  --rose: #F87171;
+  --rose-bg: rgba(239, 68, 68, 0.15);
+  --rose-text: #FCA5A5;
+  --rose-border: rgba(239, 68, 68, 0.38);
+
+  --purple-bg: rgba(139, 92, 246, 0.16);
+  --purple-text: #C4B5FD;
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.25);
+  --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.28);
+  --shadow-md: 0 10px 28px rgba(0, 0, 0, 0.38);
+  --shadow-lg: 0 20px 44px rgba(0, 0, 0, 0.55);
+}

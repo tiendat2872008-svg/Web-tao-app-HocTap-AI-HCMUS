@@ -1,0 +1,175 @@
+/* ==========================================================================
+   3.7. RESPONSIVE DESIGN — LAPTOP (1366px), TABLET (768–1199px), MOBILE (<768px)
+   ========================================================================== */
+
+/* Laptop vừa & Tablet ngang (<= 1199px) */
+@media (max-width: 1199px) {
+  .container { padding: 0 18px; }
+  .blocks-grid { grid-template-columns: repeat(2, 1fr); }
+  .schedule-layout { grid-template-columns: 320px 1fr; }
+  .whatif-top-grid { grid-template-columns: 1fr; }
+  .save-pill { display: none; }
+}
+
+/* Tablet dọc (<= 960px) */
+@media (max-width: 960px) {
+  .bento-grid { grid-template-columns: 1fr 1fr; }
+  .bento-grid .kpi-card:nth-child(3) { grid-column: 1 / -1; }
+  .schedule-layout { grid-template-columns: 1fr; }
+  .planner-list { max-height: 360px; }
+  .whatif-courses-grid { grid-template-columns: 1fr; }
+  .major-select-wrap { display: none; }
+}
+
+/* Điện thoại di động (< 768px) — Responsive Card Stack & One-hand UX */
+@media (max-width: 767px) {
+  .container { padding: 0 14px; }
+  .header-inner { height: 60px; gap: 8px; }
+  .brand-subtitle { display: none; }
+  .brand-title { font-size: 15px; }
+  .desktop-data-actions { display: none; }
+  .mobile-overflow { display: block; }
+
+  /* Tabs cuộn chạm ngang gọn gàng */
+  .nav-bar-row { margin-bottom: 14px; }
+  .segmented-tabs {
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .segmented-tabs::-webkit-scrollbar { display: none; }
+  .seg-tab {
+    flex: 1;
+    justify-content: center;
+    padding: 9px 12px;
+    font-size: 12.5px;
+  }
+  .seg-tab svg { display: none; }
+
+  /* Bento Grid về 1 cột dọc */
+  .bento-grid { grid-template-columns: 1fr; gap: 12px; }
+  .blocks-grid { grid-template-columns: 1fr; gap: 10px; }
+  .card { padding: 16px; border-radius: 14px; }
+  .kpi-big { font-size: 28px; }
+
+  /* Bộ lọc gói gọn vào nút Bộ lọc (Bottom Sheet) */
+  .desktop-filters { display: none; }
+  .mobile-only { display: inline-flex; }
+  .search-box { max-width: none; }
+  .filter-toolbar { padding: 12px 14px; }
+  .filter-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--navy);
+  }
+
+  /* Ẩn bảng Desktop, hiện Thẻ Học phần dọc thân thiện thao tác 1 tay */
+  .desktop-table-wrap { display: none; }
+  .mobile-course-list { display: block; }
+
+  .mobile-group-head {
+    background: var(--bg-subtle);
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .mobile-course-card {
+    padding: 14px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .mob-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .mob-card-badges {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 4px;
+  }
+
+  .mob-card-controls {
+    display: grid;
+    grid-template-columns: 1fr 104px;
+    gap: 8px;
+  }
+  .mob-card-controls select,
+  .mob-card-controls input {
+    min-height: 42px; /* Vùng chạm chuẩn thao tác 1 tay */
+    font-size: 13.5px;
+  }
+
+  /* What-if Mobile */
+  .target-cards { grid-template-columns: 1fr; }
+  .whatif-metrics { grid-template-columns: 1fr; }
+  .whatif-courses-grid { padding: 12px 14px 16px; }
+  .sandbox-banner { padding: 12px 14px; }
+
+  /* TKB Mobile: Chuyển sang thẻ theo từng ngày */
+  .desktop-timetable-wrap { display: none; }
+  .mobile-timetable-wrap { display: block; }
+
+  .day-pills {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    margin-bottom: 10px;
+  }
+  .day-pill {
+    border: 1px solid var(--border-color);
+    background: var(--bg-subtle);
+    color: var(--text-secondary);
+    padding: 7px 14px;
+    border-radius: var(--radius-pill);
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .day-pill.active {
+    background: var(--navy);
+    color: #FFFFFF;
+    border-color: var(--navy);
+  }
+
+  .mobile-day-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .mob-tt-card {
+    border: 1px solid var(--border-color);
+    border-left: 4px solid var(--navy);
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+    background: var(--bg-subtle);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .mob-tt-card.campus-lt { border-left-color: var(--emerald); }
+  .mob-tt-card.is-conflict {
+    border-left-color: var(--rose);
+    background: var(--rose-bg);
+    border-color: var(--rose-border);
+  }
+
+  .toast-container { left: 14px; right: 14px; bottom: 14px; }
+}
