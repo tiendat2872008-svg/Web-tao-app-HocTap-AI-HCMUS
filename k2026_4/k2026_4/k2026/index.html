@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Theo dõi tiến độ, kế hoạch học kỳ và mô phỏng GPA ngành Trí tuệ nhân tạo K2026.">
+<meta name="theme-color" content="#16365f">
+<meta name="color-scheme" content="light dark">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="K2026 Học tập">
+<title>Quản lý Tiến độ Học tập K2026 – Nhóm 07</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
+<link rel="apple-touch-icon" sizes="192x192" href="assets/icon-192.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="logo">AI</span><div><b>Quản lý Tiến độ Học tập</b><small>Ngành Trí tuệ nhân tạo · K2026</small></div></div>
+  <nav id="tabs">
+    <button data-tab="dash" aria-label="Tiến độ" title="Tiến độ">Tiến độ</button><button data-tab="courses" aria-label="Học phần" title="Học phần">Học phần</button>
+    <button data-tab="schedule" aria-label="Kế hoạch học kỳ" title="Kế hoạch học kỳ">Kế hoạch học kỳ</button><button data-tab="whatif" aria-label="Mô phỏng điểm" title="Mô phỏng điểm">Mô phỏng điểm</button><button data-tab="data" aria-label="Dữ liệu và cấu hình" title="Dữ liệu và cấu hình">Dữ liệu &amp; Cấu hình</button>
+  </nav>
+  <button id="btnMore" class="more" aria-label="Thêm thao tác" aria-expanded="false" aria-controls="actions">⋯</button>
+  <div class="actions" id="actions">
+    <button id="btnTheme" title="Đổi giao diện">Giao diện</button>
+    <button id="btnExport">Xuất JSON</button>
+    <label class="btn" for="fileImport">Nhập JSON</label><input type="file" id="fileImport" accept=".json" hidden>
+    <button id="btnReset" class="danger">Đặt lại</button>
+  </div>
+</header>
+<main>
+  <section id="tab-dash"></section>
+  <section id="tab-courses"></section>
+  <section id="tab-schedule"></section>
+  <section id="tab-whatif"></section>
+  <section id="tab-data"></section>
+</main>
+<div id="modal"></div>
+<div id="toast" role="status"></div>
+<script src="js/data.js"></script>
+<script src="js/catalog.js"></script>
+<script src="js/grading.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/views.js"></script>
+<script src="js/app.js"></script>
+<script src="js/pwa.js"></script>
+</body>
+</html>

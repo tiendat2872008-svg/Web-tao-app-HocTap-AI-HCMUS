@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "k2026",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["C:/Users/Viet/AppData/Local/Temp/claude/634b0ec5e9ec5383/ad519b3a-7b38-4d85-9b1a-8d76c95df98d/scratchpad/serve.js", "C:/Users/Viet/Downloads/k2026_4/k2026", "5179"],
+      "port": 5179
+    }
+  ]
+}
